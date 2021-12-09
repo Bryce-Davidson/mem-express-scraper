@@ -9,6 +9,8 @@ if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
 }
 
+console.log("PROCESS STARTED");
+
 const url =
   "https://www.memoryexpress.com/Category/VideoCards?InventoryType=InStock&Inventory=BCVIC1";
 const card_class = ".c-shca-icon-item__body-name a";
