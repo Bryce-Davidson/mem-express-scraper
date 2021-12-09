@@ -75,4 +75,3 @@ function scrape() {
 const minutes = 20;
 scrape();
 setInterval(scrape, minutes * 1000 * 60);
-// setInterval(scrape, 2000);
