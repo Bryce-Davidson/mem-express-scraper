@@ -4,8 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development node index.js"
   },
   "author": "",
   "license": "ISC",
@@ -13,6 +13,10 @@
     "axios": "^0.24.0",
     "cheerio": "^1.0.0-rc.10",
     "dotenv": "^10.0.0",
+    "moment": "^2.29.1",
     "twilio": "^3.71.3"
+  },
+  "engines": {
+    "node": "14.17.6"
   }
 }
