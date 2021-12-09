@@ -3,6 +3,8 @@ const cheerio = require("cheerio");
 const twilio = require("twilio");
 const moment = require("moment");
 
+var port = process.env.PORT || 8000;
+
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
 }
