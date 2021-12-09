@@ -1,5 +1,6 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
+const twilio = require("twilio");
 
 require("dotenv").config();
 
@@ -10,18 +11,28 @@ const key_words = ["RTX", "rtx", "GTX", "gtx"];
 
 console.log(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
-// const client = require("twilio")(
-//   process.env.TWILIO_ACCOUNT_SID,
-//   process.env.TWILIO_AUTH_TOKEN
-// );
+const client = twilio(
+  process.env.TWILIO_ACCOUNT_SID,
+  process.env.TWILIO_AUTH_TOKEN
+);
 
-client.messages
-  .create({
-    from: process.env.TWILIO_PHONE_NUMBER,
-    to: process.env.CELL_PHONE_NUMBER,
-    body: "You just sent an SMS from Node.js using Twilio!",
+const numbers = process.env.NUMBERS.split(",");
+// console.log(numbers);
+Promise.all(
+  numbers.map((number) => {
+    return client.messages.create({
+      body: "Hello from the web scraper",
+      to: number,
+      from: "whatsapp:+14155238886",
+    });
   })
-  .then((message) => console.log(message.sid));
+)
+  .then((messages) => {
+    messages.forEach((message) => {
+      console.log(messages, `Payload sent to ${message.to.split(":")[1]}`);
+    });
+  })
+  .catch((err) => console.error(err));
 
 function scrape(seconds) {
   let count = 0;
