@@ -9,7 +9,7 @@ if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
 }
 
-console.log("PROCESS STARTED");
+console.log(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 const url =
   "https://www.memoryexpress.com/Category/VideoCards?InventoryType=InStock&Inventory=BCVIC1";
