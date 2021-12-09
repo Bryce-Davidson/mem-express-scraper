@@ -7,7 +7,7 @@ const card_class = ".c-shca-icon-item__body-name a";
 const key_words = ["RTX", "rtx", "GTX", "gtx"];
 
 function scrape(seconds) {
-  let hit = 0;
+  let count = 0;
   setInterval(() => {
     axios
       .get(url)
@@ -23,8 +23,8 @@ function scrape(seconds) {
             return $(el).text().trim();
           })
           .get();
-        hit++;
-        console.log({ hit, cards });
+        count++;
+        console.log({ count, cards });
       })
       .catch((error) => {
         console.log(error);
