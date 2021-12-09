@@ -2,14 +2,16 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const twilio = require("twilio");
 const moment = require("moment");
+const express = require("express");
 
+var app = express();
 var port = process.env.PORT || 8000;
 
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
 }
 
-console.log(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
+// console.log(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
 
 const url =
   "https://www.memoryexpress.com/Category/VideoCards?InventoryType=InStock&Inventory=BCVIC1";
@@ -75,5 +77,10 @@ function scrape() {
   }
 }
 const minutes = 20;
-scrape();
-setInterval(scrape, minutes * 1000 * 60);
+
+app.listen(process.env.PORT || 5000, () => {
+  scrape();
+  setInterval(scrape, minutes * 1000 * 60);
+});
+
+module.exports = app;
