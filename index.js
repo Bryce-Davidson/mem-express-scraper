@@ -28,7 +28,7 @@ function scrape() {
   const currentTime = moment().tz("America/Vancouver");
   console.log(currentTime.format("h:mm A"));
   const current_time_format = currentTime.format("h:mm A");
-  console.log(current_time_format);
+  console.log(currentTime);
 
   console.log("Checking time...");
 
