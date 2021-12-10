@@ -95,7 +95,7 @@ const job = new CronJob({
 const health_check = new CronJob({
   cronTime: "*/5 * * * *",
   onTick: () => {
-    console("Server is Running...");
+    console.log("Server is Running...");
     console.log(`Next Job: ${job.nextDates().format("MMM DD, HH:mm A")}`);
   },
   start: true,
