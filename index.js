@@ -16,7 +16,7 @@ const card_class = ".c-shca-icon-item__body-name a";
 const key_words = ["RTX", "rtx", "GTX", "gtx", "3060", "3070", "3080", "3090"];
 
 let count = 0;
-function scrape() {
+async function scrape() {
   console.log("Scraping...");
   axios
     .get(url)
@@ -33,15 +33,15 @@ function scrape() {
         })
         .get();
       count++;
-      console.log({ count, time: current_time_format, cards });
+      console.log({ count, cards });
 
       return Promise.all(
         numbers.map((number) => {
           return client.messages.create({
             body: `
-              Update: ${count}\nStock: ${
-              cards.length
-            } cards\n${current_time_format}\n\n${cards.join("\n\n")}`,
+              Update: ${count}\nStock: ${cards.length} cards\n\n${cards.join(
+              "\n\n"
+            )}`,
             to: number,
             from: "whatsapp:+14155238886",
           });
@@ -58,19 +58,14 @@ function scrape() {
     });
 }
 
-const onTick = (onComplete) => {
-  console.log("You will see this message every second");
-  onComplete();
-};
-
-const onComplete = () => {
-  console.log("Job completed");
-};
-
-var job = new CronJob(
-  "* * * * * *",
-  onTick,
-  onComplete,
-  true,
-  "America/Vancouver"
-);
+const job = new CronJob({
+  cronTime: "*/30 14-17 10-23 * * *",
+  onTick: async () => {
+    if (job.taskRunning) return;
+    job.taskRunning = true;
+    await scrape();
+    job.taskRunning = false;
+  },
+  start: true,
+  timeZone: "America/Vancouver",
+});
