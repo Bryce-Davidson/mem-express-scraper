@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const twilio = require("twilio");
-const moment = require("moment");
+const moment = require("moment-timezone");
 const http = require("http");
 
 if (process.env.NODE_ENV === "development") {
@@ -25,7 +25,7 @@ const numbers = process.env.NUMBERS.split(",");
 
 let count = 0;
 function scrape() {
-  const currentTime = moment();
+  const currentTime = moment().tz("America/Vancouver");
   const current_time_format = currentTime.format("h:mm A");
 
   console.log("Checking time...");
@@ -83,8 +83,8 @@ var server = http.createServer((req, res) => {});
 
 server.listen(process.env.PORT || 80, () => {
   console.log("Listening on port 80");
-  //   scrape();
-  //   setInterval(scrape, minutes * 1000 * 60);
+  scrape();
+  setInterval(scrape, minutes * 1000 * 60);
   //   setInterval(() => {
   //     console.log("Server is running...");
   //   }, 1000);

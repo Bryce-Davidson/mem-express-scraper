@@ -13,7 +13,7 @@
     "axios": "^0.24.0",
     "cheerio": "^1.0.0-rc.10",
     "dotenv": "^10.0.0",
-    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.34",
     "twilio": "^3.71.3"
   },
   "engines": {
