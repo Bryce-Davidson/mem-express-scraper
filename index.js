@@ -2,6 +2,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const twilio = require("twilio");
 const moment = require("moment");
+const http = require("http");
 
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
@@ -78,5 +79,11 @@ function scrape() {
 }
 const minutes = 20;
 
-scrape();
-setInterval(scrape, minutes * 1000 * 60);
+var server = http.createServer((req, res) => {
+  scrape();
+  setInterval(scrape, minutes * 1000 * 60);
+});
+
+server.listen(process.env.PORT || 80, () => {
+  console.log("Listening on port 80");
+});
