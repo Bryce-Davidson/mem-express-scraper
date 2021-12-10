@@ -75,7 +75,7 @@ async function scrape(next_job) {
 }
 
 const job = new CronJob({
-  cronTime: "*/30 10-20 * * *",
+  cronTime: "*/32 10-20 * * *",
   onTick: async (onComplete) => {
     if (job.taskRunning) return;
     job.taskRunning = true;
