@@ -28,11 +28,14 @@ function scrape() {
   const currentTime = moment().tz("America/Vancouver");
   console.log(currentTime.format("h:mm A"));
   const current_time_format = currentTime.format("h:mm A");
+  console.log(current_time_format);
 
   console.log("Checking time...");
+
   const extra = moment().format("YYYY-MM-DD") + " ";
   const start_time = moment(extra + "10:00");
   const end_time = moment(extra + "20:00");
+  console.log(start_time, end_time);
 
   if (moment(currentTime).isBetween(start_time, end_time)) {
     console.log("Scraping...");
