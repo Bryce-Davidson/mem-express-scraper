@@ -13,7 +13,7 @@ if (process.env.NODE_ENV === "development") {
 const url =
   "https://www.memoryexpress.com/Category/VideoCards?InventoryType=InStock&Inventory=BCVIC1";
 const card_class = ".c-shca-icon-item__body-name a";
-const key_words = ["RTX", "rtx", "GTX", "gtx"];
+const key_words = ["RTX", "rtx", "GTX", "gtx", "3060", "3070", "3080", "3090"];
 
 const client = twilio(
   process.env.TWILIO_ACCOUNT_SID,
@@ -36,7 +36,6 @@ function scrape() {
   const end_time = moment(currentTime).set({ hour: 20, minute: 0 });
 
   console.log(currentTime, start_time, end_time);
-  console.log(moment(currentTime).isBetween(start_time, end_time));
   if (moment(currentTime).isBetween(start_time, end_time)) {
     console.log("Scraping...");
     axios
