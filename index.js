@@ -26,15 +26,17 @@ const numbers = process.env.NUMBERS.split(",");
 let count = 0;
 function scrape() {
   const currentTime = moment().tz("America/Vancouver");
-  //   console.log(currentTime.format("h:mm A"));
+  console.log(currentTime);
   const current_time_format = currentTime.format("h:mm A");
-  //   console.log(currentTime);
+  console.log(currentTime);
 
   console.log("Checking time...");
 
   const extra = moment().tz("America/Vancouver").format("YYYY-MM-DD") + " ";
-  const start_time = moment(extra + "10:00").tz("America/Vancouver");
-  const end_time = moment(extra + "20:00").tz("America/Vancouver");
+  const start_time = moment(extra + "10:00");
+  const end_time = moment(extra + "20:00");
+
+  console.log(currentTime, start_time, end_time);
 
   if (moment(currentTime).isBetween(start_time, end_time)) {
     console.log("Scraping...");
