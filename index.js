@@ -2,10 +2,6 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const twilio = require("twilio");
 const moment = require("moment");
-const express = require("express");
-
-var app = express();
-var port = process.env.PORT || 8000;
 
 if (process.env.NODE_ENV === "development") {
   require("dotenv").config();
@@ -78,9 +74,5 @@ function scrape() {
 }
 const minutes = 20;
 
-app.listen(process.env.PORT || 5000, () => {
-  scrape();
-  setInterval(scrape, minutes * 1000 * 60);
-});
-
-module.exports = app;
+scrape();
+setInterval(scrape, minutes * 1000 * 60);
