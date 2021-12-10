@@ -82,7 +82,7 @@ const minutes = 20;
 var server = http.createServer((req, res) => {});
 
 server.listen(process.env.PORT || 80, () => {
-  //   console.log("Listening on port 80");
+  console.log("Listening on port 80");
   //   scrape();
   //   setInterval(scrape, minutes * 1000 * 60);
   //   setInterval(() => {
