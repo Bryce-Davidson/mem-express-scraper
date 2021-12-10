@@ -101,3 +101,5 @@ const health_check = new CronJob({
   start: true,
   timeZone: "America/Vancouver",
 });
+
+health_check.fireOnTick();
