@@ -91,4 +91,3 @@ const job = new CronJob({
   start: true,
   timeZone: "America/Vancouver",
 });
-job.fireOnTick();
