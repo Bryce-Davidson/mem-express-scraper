@@ -37,7 +37,7 @@ function scrape() {
   const end_time = moment(extra + "20:00");
 
   console.log(currentTime, start_time, end_time);
-
+  console.log(moment(currentTime).isBetween(start_time, end_time));
   if (moment(currentTime).isBetween(start_time, end_time)) {
     console.log("Scraping...");
     axios
