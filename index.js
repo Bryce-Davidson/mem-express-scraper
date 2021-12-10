@@ -3,6 +3,9 @@ const cheerio = require("cheerio");
 const twilio = require("twilio");
 const cron = require("cron");
 const CronJob = cron.CronJob;
+const http = require("http");
+const { JobInstance } = require("twilio/lib/rest/bulkexports/v1/export/job");
+
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
 const numbers = process.env.NUMBERS.split(",");
@@ -88,7 +91,7 @@ const job = new CronJob({
       `Next job at: ${job.nextDates().format("MMM DD, HH:mm-ss[s] A")}`
     );
   },
-  start: true,
+  start: false,
   timeZone: "America/Vancouver",
 });
 
@@ -98,8 +101,22 @@ const health_check = new CronJob({
     console.log("Server is Running...");
     console.log(`Next Job: ${job.nextDates().format("MMM DD, HH:mm A")}`);
   },
-  start: true,
+  start: false,
   timeZone: "America/Vancouver",
 });
 
-health_check.fireOnTick();
+var server = http.createServer((req, res) => {
+  return res.end(
+    `Server is Running...\n\nNext Job: ${job
+      .nextDates()
+      .format("MMM DD, HH:mm A")}`
+  );
+});
+
+const PORT = process.env.PORT || 80;
+server.listen(PORT, () => {
+  console.log(`Listening on port ${PORT}`);
+  job.start();
+  health_check.start();
+  health_check.fireOnTick();
+});
