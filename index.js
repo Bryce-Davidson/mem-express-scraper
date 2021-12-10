@@ -72,6 +72,8 @@ function scrape() {
       .catch((error) => {
         console.log(error);
       });
+  } else {
+    console.log("Not time yet...");
   }
 }
 const minutes = 20;
