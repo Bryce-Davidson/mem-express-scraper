@@ -1,26 +1,21 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const twilio = require("twilio");
-const http = require("http");
-
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
-
-// console.log(process.env.TWILIO_ACCOUNT_SID, process.env.TWILIO_AUTH_TOKEN);
-
-const url =
-  "https://www.memoryexpress.com/Category/VideoCards?InventoryType=InStock&Inventory=BCVIC1";
-const card_class = ".c-shca-icon-item__body-name a";
-const key_words = ["RTX", "rtx", "GTX", "gtx", "3060", "3070", "3080", "3090"];
-
+const CronJob = require("cron").CronJob;
+const numbers = process.env.NUMBERS.split(",");
 const client = twilio(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
 );
 
-const numbers = process.env.NUMBERS.split(",");
-// console.log(numbers);
+if (process.env.NODE_ENV !== "production") {
+  require("dotenv").config();
+}
+
+const url =
+  "https://www.memoryexpress.com/Category/VideoCards?InventoryType=InStock&Inventory=BCVIC1";
+const card_class = ".c-shca-icon-item__body-name a";
+const key_words = ["RTX", "rtx", "GTX", "gtx", "3060", "3070", "3080", "3090"];
 
 let count = 0;
 function scrape() {
@@ -65,11 +60,13 @@ function scrape() {
     });
 }
 
-const minutes = 20;
-var server = http.createServer((req, res) => {});
-
-server.listen(process.env.PORT || 80, () => {
-  console.log("Listening on port 80");
-  scrape();
-  setInterval(scrape, minutes * 1000 * 60);
-});
+var job = new CronJob(
+  "* * * * *",
+  () => {
+    scrape();
+  },
+  null,
+  true,
+  "America/Los_Angeles"
+);
+job.start();
