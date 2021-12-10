@@ -4,7 +4,6 @@ const twilio = require("twilio");
 const cron = require("cron");
 const CronJob = cron.CronJob;
 const http = require("http");
-const { JobInstance } = require("twilio/lib/rest/bulkexports/v1/export/job");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
@@ -50,7 +49,7 @@ async function scrape(next_job) {
       console.log({ count, cards });
 
       const dope =
-        cards.length > 3 ? "✅✅✅✅✅✅✅✅✅✅✅" : "❌❌❌❌❌❌❌❌❌❌❌";
+        cards.length > 3 ? "✅✅✅✅✅✅✅✅✅✅" : "❌❌❌❌❌❌❌❌❌❌";
 
       return Promise.all(
         numbers.map((number) => {
@@ -61,15 +60,15 @@ async function scrape(next_job) {
             } cards\nNext Scrape: ${next_job}\n${dope}\n\n${cards.join(
               "\n\n"
             )}`,
+            messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
             to: number,
-            from: "whatsapp:+14155238886",
           });
         })
       );
     })
     .then((messages) => {
       messages.forEach((message) => {
-        console.log(`Payload sent to ${message.to.split(":")[1]}`);
+        console.log(`Payload sent to ${message.to}`);
       });
     });
 }
