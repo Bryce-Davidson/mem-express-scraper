@@ -2,15 +2,13 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const twilio = require("twilio");
 const CronJob = require("cron").CronJob;
+if (process.env.NODE_ENV !== "production") require("dotenv").config();
+
 const numbers = process.env.NUMBERS.split(",");
 const client = twilio(
   process.env.TWILIO_ACCOUNT_SID,
   process.env.TWILIO_AUTH_TOKEN
 );
-
-if (process.env.NODE_ENV !== "production") {
-  require("dotenv").config();
-}
 
 const url =
   "https://www.memoryexpress.com/Category/VideoCards?InventoryType=InStock&Inventory=BCVIC1";
@@ -60,13 +58,19 @@ function scrape() {
     });
 }
 
+const onTick = (onComplete) => {
+  console.log("You will see this message every second");
+  onComplete();
+};
+
+const onComplete = () => {
+  console.log("Job completed");
+};
+
 var job = new CronJob(
-  "* * * * *",
-  () => {
-    scrape();
-  },
-  null,
+  "* * * * * *",
+  onTick,
+  onComplete,
   true,
-  "America/Los_Angeles"
+  "America/Vancouver"
 );
-job.start();
