@@ -4,7 +4,7 @@ const twilio = require("twilio");
 const moment = require("moment-timezone");
 const http = require("http");
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV !== "production") {
   require("dotenv").config();
 }
 
