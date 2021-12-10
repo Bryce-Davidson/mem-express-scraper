@@ -33,7 +33,7 @@ function scrape() {
   console.log("Checking time...");
 
   const start_time = moment(currentTime).set({ hour: 10, minute: 0 });
-  const start_time = moment(currentTime).set({ hour: 20, minute: 0 });
+  const end_time = moment(currentTime).set({ hour: 20, minute: 0 });
 
   console.log(currentTime, start_time, end_time);
   console.log(moment(currentTime).isBetween(start_time, end_time));
