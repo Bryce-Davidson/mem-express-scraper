@@ -33,8 +33,8 @@ function scrape() {
   console.log("Checking time...");
 
   const extra = moment().tz("America/Vancouver").format("YYYY-MM-DD") + " ";
-  const start_time = moment(extra + "10:00");
-  const end_time = moment(extra + "20:00");
+  const start_time = moment(extra + "10:00").tz("America/Vancouver");
+  const end_time = moment(extra + "20:00").tz("America/Vancouver");
 
   console.log(currentTime, start_time, end_time);
   console.log(moment(currentTime).isBetween(start_time, end_time));
