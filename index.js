@@ -26,6 +26,7 @@ const numbers = process.env.NUMBERS.split(",");
 let count = 0;
 function scrape() {
   const currentTime = moment().tz("America/Vancouver");
+  console.log(currentTime.format("h:mm A"));
   const current_time_format = currentTime.format("h:mm A");
 
   console.log("Checking time...");
