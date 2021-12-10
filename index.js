@@ -72,7 +72,7 @@ async function scrape(next_job) {
 }
 
 const job = new CronJob({
-  cronTime: "*/20 10-20 * * *",
+  cronTime: "*/30 10-20 * * *",
   onTick: async (onComplete) => {
     if (job.taskRunning) return;
     job.taskRunning = true;
@@ -87,6 +87,16 @@ const job = new CronJob({
     console.log(
       `Next job at: ${job.nextDates().format("MMM DD, HH:mm-ss[s] A")}`
     );
+  },
+  start: true,
+  timeZone: "America/Vancouver",
+});
+
+const health_check = new CronJob({
+  cronTime: "*/5 * * * *",
+  onTick: () => {
+    console("Server is Running...");
+    console.log(`Next Job: ${job.nextDates().format("MMM DD, HH:mm A")}`);
   },
   start: true,
   timeZone: "America/Vancouver",
