@@ -55,7 +55,7 @@ async function scrape(next_job) {
         numbers.map((number) => {
           return client.messages.create({
             body: `
-            ${dope}\nChecked: ${count} times\nStock: ${
+            \n${dope}\nChecked: ${count} times\nStock: ${
               cards.length
             } cards\nNext Scrape: ${next_job}\n${dope}\n\n${cards.join(
               "\n\n"
