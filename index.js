@@ -48,17 +48,13 @@ async function scrape(next_job) {
       count++;
       console.log({ count, cards });
 
-      const dope = cards.length > 3 ? "✅" : "❌";
-
       return Promise.all(
         numbers.map((number) => {
           return client.messages.create({
             body: `
-            \n${dope}\nChecked: ${count} times\nStock: ${
+            \nChecked: ${count} times\nStock: ${
               cards.length
-            } cards\nNext Scrape: ${next_job}\n${dope}\n\n${cards.join(
-              "\n\n"
-            )}`,
+            } cards\nNext Scrape: ${next_job}\n\n${cards.join("\n\n")}`,
             messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
             to: number,
           });
