@@ -48,8 +48,7 @@ async function scrape(next_job) {
       count++;
       console.log({ count, cards });
 
-      const dope =
-        cards.length > 3 ? "✅✅✅✅✅✅✅✅✅✅" : "❌❌❌❌❌❌❌❌❌❌";
+      const dope = cards.length > 3 ? "✅" : "❌";
 
       return Promise.all(
         numbers.map((number) => {
