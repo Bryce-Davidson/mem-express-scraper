@@ -52,12 +52,11 @@ async function scrape(next_job) {
         numbers.map((number) => {
           return client.messages.create({
             body: `
-            \nChecked: ${count} times\nStock: ${
-              cards.length
-            } cards\nNext Scrape: ${next_job}\n\n${cards.join("\n\n")}`.replace(
-              " ",
-              "\u{0020}"
-            ),
+            Stock: ${cards.length}\nNext: ${next_job}\n\n${cards
+              .map((card) => {
+                return card.slice(0, 25);
+              })
+              .join("\n\n")}`.replace(" ", "\u{0020}"),
             messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
             to: number,
           });
