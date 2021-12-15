@@ -52,7 +52,7 @@ async function scrape(next_job) {
         numbers.map((number) => {
           return client.messages.create({
             body: `
-            Stock: ${cards.length}\nNext: ${next_job}\n\n${cards
+            \nStock: ${cards.length}\nNext: ${next_job}\n\n${cards
               .map((card) => {
                 return card.split("GB")[0] + "GB";
               })
