@@ -54,7 +54,7 @@ async function scrape(next_job) {
             body: `
             Stock: ${cards.length}\nNext: ${next_job}\n\n${cards
               .map((card) => {
-                return card.slice(0, 25);
+                return card.split("GB")[0] + "GB";
               })
               .join("\n\n")}`.replace(" ", "\u{0020}"),
             messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
