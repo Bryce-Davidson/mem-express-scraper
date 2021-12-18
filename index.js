@@ -4,6 +4,7 @@ const twilio = require("twilio");
 const cron = require("cron");
 const CronJob = cron.CronJob;
 const http = require("http");
+const { prev } = require("cheerio/lib/api/traversing");
 
 if (process.env.NODE_ENV !== "production") require("dotenv").config();
 
@@ -29,6 +30,8 @@ const key_words = [
 ];
 
 let count = 0;
+let prev_cards = "";
+
 async function scrape(next_job) {
   console.log("Scraping...");
   return axios
@@ -45,23 +48,27 @@ async function scrape(next_job) {
           return $(el).text().trim();
         })
         .get();
-      count++;
-      console.log({ count, cards });
 
-      return Promise.all(
-        numbers.map((number) => {
-          return client.messages.create({
-            body: `
+      const send_text = prev_cards == cards.join(",") ? false : true;
+      console.log({ count, prev_cards, cards });
+      prev_cards = cards.join(",");
+
+      if (send_text) {
+        return Promise.all(
+          numbers.map((number) => {
+            return client.messages.create({
+              body: `
             \nStock: ${cards.length}\n\n${cards
-              .map((card) => {
-                return card.split("GB")[0] + "GB";
-              })
-              .join("\n\n")}`.replace(" ", "\u{0020}"),
-            messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
-            to: number,
-          });
-        })
-      );
+                .map((card) => {
+                  return card.split("GB")[0] + "GB";
+                })
+                .join("\n\n")}`.replace(" ", "\u{0020}"),
+              messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
+              to: number,
+            });
+          })
+        );
+      }
     })
     .then((messages) => {
       messages.forEach((message) => {
