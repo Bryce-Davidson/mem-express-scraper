@@ -15,7 +15,7 @@ const client = twilio(
 );
 
 const url =
-  "https://www.memoryexpress.com/Category/VideoCards?InventoryType=InStock&Inventory=BCVIC1";
+  "https://www.memoryexpress.com/Category/VideoCards?InventoryType=InStock&Inventory=BCVIC1&PageSize=120";
 const card_class = ".c-shca-icon-item__body-name a";
 const key_words = [
   "GeForce",
@@ -73,7 +73,7 @@ function scrape(next_job) {
 }
 
 const job = new CronJob({
-  cronTime: "*/5 * 10-19 * * *",
+  cronTime: "*/2 10-19 * * *",
   onTick: () => {
     const next_job = job.nextDates().format("MMM DD, HH:mm-ss[s] A");
     scrape(next_job);
