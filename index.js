@@ -29,12 +29,12 @@ const key_words = [
   "3090",
 ];
 
-let prev_cards;
+var prev_cards = [];
 
-async function scrape(next_job) {
-  console.log("Scraping...");
+function scrape(next_job) {
   axios.get(url).then((response) => {
     const $ = cheerio.load(response.data);
+
     const cards = $(card_class)
       .filter((i, el) => {
         $(el).find("span").remove();
@@ -46,21 +46,18 @@ async function scrape(next_job) {
       })
       .get();
 
-    const send_text = prev_cards !== cards.join(",");
-    console.log({ prev_cards, cards: cards.join(",") });
-    prev_cards = cards.join(",");
-    console.log({ prev_cards, cards: cards.join(",") });
+    const new_cards = cards.filter((card) => !prev_cards.includes(card));
 
-    if (send_text) {
-      return Promise.all(
+    if (new_cards.length > 0) {
+      prev_cards = prev_cards.concat(new_cards);
+      console.log(new_cards);
+      Promise.all(
         numbers.map((number) => {
           return client.messages.create({
-            body: `
-            \nStock: ${cards.length}\n\n${cards
-              .map((card) => {
-                return card.split("GB")[0] + "GB";
-              })
-              .join("\n\n")}`.replace(" ", "\u{0020}"),
+            body: `New Cards: ${new_cards.join("\n\n")}`.replace(
+              " ",
+              "\u{0020}"
+            ),
             messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
             to: number,
           });
@@ -70,53 +67,28 @@ async function scrape(next_job) {
           console.log(`Payload sent to ${message.to}`);
         });
       });
+    } else {
+      console.log("No new cards...", next_job);
     }
   });
 }
 
 const job = new CronJob({
-  cronTime: "*/10 * 10-19 * * *",
-  onTick: async (onComplete) => {
-    if (job.taskRunning) return;
-    job.taskRunning = true;
-
-    const next_job = job.nextDates().format("MMM DD, HH:mm-ss[s] A");
-    await scrape(next_job).then(onComplete).catch(console.log);
-
-    job.taskRunning = false;
-  },
-  onComplete: async () => {
-    console.log("Scraping completed");
-    console.log(
-      `Next job at: ${job.nextDates().format("MMM DD, HH:mm-ss[s] A")}`
-    );
-  },
-  start: false,
-  timeZone: "America/Vancouver",
-});
-
-const health_check = new CronJob({
-  cronTime: "*/10 * * * *",
+  cronTime: "*/5 * 10-19 * * *",
   onTick: () => {
-    console.log("Server is Running...");
-    console.log(`Next Job: ${job.nextDates().format("MMM DD, HH:mm A")}`);
+    const next_job = job.nextDates().format("MMM DD, HH:mm-ss[s] A");
+    scrape(next_job);
   },
   start: false,
   timeZone: "America/Vancouver",
 });
 
 var server = http.createServer((req, res) => {
-  return res.end(
-    `Server is Running...\n\nNext Job: ${job
-      .nextDates()
-      .format("MMM DD, HH:mm A")}`
-  );
+  return res.end(`Server is Running...`);
 });
 
 const PORT = process.env.PORT || 80;
 server.listen(PORT, () => {
   console.log(`Listening on port ${PORT}`);
   job.start();
-  health_check.start();
-  health_check.fireOnTick();
 });
