@@ -54,10 +54,9 @@ function scrape(next_job) {
       Promise.all(
         numbers.map((number) => {
           return client.messages.create({
-            body: `New Cards: ${new_cards.join("\n\n")}`.replace(
-              " ",
-              "\u{0020}"
-            ),
+            body: `✅✅✅✅✅✅✅✅✅✅\n\n${new_cards.join(
+              "\n\n"
+            )}\n\n✅✅✅✅✅✅✅✅✅✅`.replace(" ", "\u{0020}"),
             messagingServiceSid: process.env.TWILIO_MESSAGING_SERVICE_SID,
             to: number,
           });
